@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using Calculator.command.mathOperator;
+using System.Collections.Generic;
 
 namespace UnknownOperatorTest
 {
@@ -39,7 +40,7 @@ namespace UnknownOperatorTest
         {
             UnknownOperator mathOperator = new UnknownOperator("");
 
-            Assert.That(mathOperator.Execute(leftTerm, rightTerm), Is.EqualTo(expected));
+            Assert.That(mathOperator.Execute( new Dictionary<string, int>() ), Is.EqualTo(expected));
         }
     }
 }

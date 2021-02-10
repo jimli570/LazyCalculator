@@ -1,4 +1,6 @@
-﻿namespace Calculator.command.mathOperator
+﻿using System.Collections.Generic;
+
+namespace Calculator.command.mathOperator
 {
     public enum OperationTypes
     {
@@ -15,6 +17,7 @@
         string RightTerm { get; }
         T OperationType { get; }
 
-        int Execute(int first, int second);
+        // We might have to look up values in the register
+        int Execute(Dictionary<string, int> valueRegister);
     }
 }

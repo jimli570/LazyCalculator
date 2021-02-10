@@ -1,4 +1,5 @@
 ﻿using Calculator.command.mathOperator;
+using Calculator.command.identifier;
 
 namespace Calculator.command
 {
@@ -14,18 +15,10 @@ namespace Calculator.command
             Command = command;
             CommandType = CommandTypes.MATH;
 
-            OperationTypes operationType = GetOperatorType();
-            MathOperator = GetMathOperator( operationType );
-        }
+            string operatorCommand = command.Split(" ")[1];
 
-        private OperationTypes GetOperatorType()
-        {
-            return MathCommandHelper.GetOperatorType( Command );
-        }
-
-        private mathOperator.IOperator<OperationTypes> GetMathOperator(OperationTypes operationType)
-        {
-            return MathCommandHelper.GetMathOperator( Command, operationType );
+            OperationTypes operationType =  CalcCommandIdentifier.VALID_MATH_OPERATORS[operatorCommand];
+            MathOperator = MathCommandHelper.CreateMathOperator(Command, operationType);
         }
     }
 }

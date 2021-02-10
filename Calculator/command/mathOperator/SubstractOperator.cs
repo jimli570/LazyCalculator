@@ -1,4 +1,6 @@
-﻿namespace Calculator.command.mathOperator
+﻿using System.Collections.Generic;
+
+namespace Calculator.command.mathOperator
 {
     public class SubstractOperator : IOperator<OperationTypes>
     {
@@ -13,9 +15,15 @@
             OperationType = OperationTypes.SUBSTRACT;
         }
 
-        public int Execute(int first, int second)
+        public int Execute(Dictionary<string, int> valueRegister)
         {
-            return (first - second);
+            int lTerm = valueRegister.ContainsKey(LeftTerm) ?
+                valueRegister[LeftTerm] : 0;
+
+            int rTerm = valueRegister.ContainsKey(RightTerm) ?
+                valueRegister[RightTerm] : int.Parse(RightTerm);
+
+            return (lTerm - rTerm);
         }
     }
 }

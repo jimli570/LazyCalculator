@@ -1,4 +1,6 @@
-﻿namespace Calculator.command.mathOperator
+﻿using System.Collections.Generic;
+
+namespace Calculator.command.mathOperator
 {
     public class UnknownOperator : IOperator<OperationTypes>
     {
@@ -13,7 +15,7 @@
             OperationType = OperationTypes.UNKNOWN;
         }
 
-        public int Execute(int first, int second)
+        public int Execute(Dictionary<string, int> valueRegister)
         {
             return 0; // Just to comply with interface
         }

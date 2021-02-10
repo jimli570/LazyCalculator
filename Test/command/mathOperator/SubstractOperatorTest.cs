@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using Calculator.command.mathOperator;
+using System.Collections.Generic;
 
 namespace SubstractOperatorTest
 {
@@ -33,13 +34,13 @@ namespace SubstractOperatorTest
             Assert.That(mathOperator.OperationType, Is.EqualTo(expected));
         }
 
-        [TestCase(1, 2, -1)]
-        [TestCase(10, 12, -2)]
-        public void SubstractOperatorOperationExecuteTest(int leftTerm, int rightTerm, int expected)
+        [TestCase("a", 2, "10", -8)]
+        [TestCase("b", 12, "-2", 14)]
+        public void SubstractOperatorOperationExecuteTest(string registerName, int regValue, string rightTerm, int expected)
         {
-            SubstractOperator mathOperator = new SubstractOperator("", "");
+            SubstractOperator mathOperator = new SubstractOperator(registerName, rightTerm);
 
-            Assert.That(mathOperator.Execute(leftTerm, rightTerm), Is.EqualTo(expected));
+            Assert.That(mathOperator.Execute(new Dictionary<string, int>() { { registerName, regValue } }), Is.EqualTo(expected));
         }
     }
 }

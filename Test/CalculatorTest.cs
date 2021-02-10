@@ -22,7 +22,7 @@ namespace CalculatorTest
                 calculator.Command(commandline);
             }
 
-            Assert.That(calculator.PrintValues, Is.EqualTo(expectedList));
+            Assert.That(calculator.PrintLog, Is.EqualTo(expectedList));
         }
     }
 }

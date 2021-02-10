@@ -1,16 +1,32 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Calculator.command.mathOperator;
 
 namespace Calculator.command.identifier
 {
     public class CalcCommandIdentifier : ICommandIdentifier
     {
-        private const int PRINT_COMMAND_LEN = 2;
-        private const int MATH_COMMAND_LEN = 3;
+        public readonly static Dictionary<CommandTypes, int> COMMAND_LEN = new Dictionary<CommandTypes, int> {
+            { CommandTypes.PRINT, 2 },
+            { CommandTypes.MATH, 3 },
+            { CommandTypes.MATH_LAZY, 3 }
+        };
 
-        private readonly string PRINT_COMMAND = "print";
-        private readonly List<string> VALID_MATH_COMMANDS = new List<string>
-            { "add", "substract", "multiply" };
+        public readonly static Dictionary<CommandTypes, string> VALID_COMMANDS = new Dictionary<CommandTypes, string> {
+            { CommandTypes.PRINT, "print" }
+        };
+
+        //public readonly static Dictionary<OperationTypes, string> VALID_MATH_OPERATORS = new Dictionary<OperationTypes, string> {
+        //    { OperationTypes.ADD, "add" },
+        //    { OperationTypes.MULTIPLY, "substract" },
+        //    { OperationTypes.SUBSTRACT, "multiply" }
+        //};
+
+        public readonly static Dictionary<string, OperationTypes> VALID_MATH_OPERATORS = new Dictionary<string, OperationTypes> {
+            {"add", OperationTypes.ADD },
+            { "substract" , OperationTypes.SUBSTRACT},
+            { "multiply", OperationTypes.MULTIPLY  }
+        };
 
         public ICommand<CommandTypes> Identify(string commandline, List<string> lazyRegister)
         {
@@ -42,32 +58,24 @@ namespace Calculator.command.identifier
         
         private CommandTypes IdentifyCommandType(string commandline, List<string> lazyRegister)
         {
-            CommandTypes commandType = PotentiallyValidCommand(commandline) ?
+            CommandTypes commandType = ValidateFormat(commandline) ?
                     GetCommandType(commandline, lazyRegister) : CommandTypes.UNKNOWN;
 
             return commandType;
         }
 
-        private bool PotentiallyValidCommand(string commandline)
+        private bool ValidateFormat(string commandline)
         {
-            bool isAlphanumerical = IsAlphaNumerical(commandline);
-            bool correctLength = IsLengthCorrect(commandline);
+            bool isAlphaNumerical = Regex.IsMatch(commandline.Replace(" ", ""), "^[a-zA-Z0-9]*$");
 
-            return (isAlphanumerical && correctLength);
+            return isAlphaNumerical && ValidateLength(commandline);
         }
 
-        private bool IsAlphaNumerical(string commandline)
+        private bool ValidateLength(string commandline)
         {
-            return Regex.IsMatch(commandline.Replace(" ", ""), "^[a-zA-Z0-9]*$");
-        }
+            int numOfCommands = commandline.Split(" ").Length;
 
-        private bool IsLengthCorrect(string commandline)
-        {
-            string[] commands = commandline.Split(" ");
-            int numOfCommands = commands.Length;
-
-            return ((numOfCommands == PRINT_COMMAND_LEN) ||
-                   (numOfCommands == MATH_COMMAND_LEN));
+            return COMMAND_LEN.ContainsValue(numOfCommands);
         }
 
         private CommandTypes GetCommandType(string commandline, List<string> lazyRegister)
@@ -78,15 +86,16 @@ namespace Calculator.command.identifier
             CommandTypes commandType = CommandTypes.UNKNOWN; // Unknown until we know otherwise
 
             // Print command. Ex: "print a" or "print 10"
-            if ((commands.Length == PRINT_COMMAND_LEN) && (commands[0] == PRINT_COMMAND)) {
+            if ( COMMAND_LEN[CommandTypes.PRINT].Equals(commands.Length) &&
+                VALID_COMMANDS[CommandTypes.PRINT].Equals(commands[0]) ) {
                 commandType = CommandTypes.PRINT;
             }
             /* Math command. Ex: "a add b" or "a multiply 10"
              * Note: Numerical values are not accepted as register values
              */
-            else if ( commands.Length == MATH_COMMAND_LEN &&
-                       VALID_MATH_COMMANDS.Contains(commands[1]) &&
-                       !MathCommandHelper.IsNumber(commands[0]))
+            else if ( COMMAND_LEN[CommandTypes.MATH].Equals(commands.Length) &&
+                      VALID_MATH_OPERATORS.ContainsKey(commands[1]) &&
+                      !MathCommandHelper.IsNumber(commands[0]))
             {
                 bool needLazyEvaluation = NeedsLazyEvaluation(commands[0], commands[2], lazyRegister);
 

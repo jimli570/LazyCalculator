@@ -1,4 +1,5 @@
 ﻿using Calculator.command.mathOperator;
+using Calculator.command;
 
 namespace Calculator.command
 {
@@ -9,35 +10,7 @@ namespace Calculator.command
             return int.TryParse(potentialNumber, out int n);
         }
 
-        public static OperationTypes GetOperatorType( string command )
-        {
-            // At this point we know there is 3 commands stored in 'm_command'
-            string operatorCommand = command.Split(" ")[1];
-            OperationTypes operationType;
-
-            switch (operatorCommand)
-            {
-                case "add":
-                    operationType = OperationTypes.ADD;
-                    break;
-
-                case "substract":
-                    operationType = OperationTypes.SUBSTRACT;
-                    break;
-
-                case "multiply":
-                    operationType = OperationTypes.MULTIPLY;
-                    break;
-
-                default: // unknown operator
-                    operationType = OperationTypes.UNKNOWN;
-                    break;
-            }
-
-            return operationType;
-        }
-
-        public static mathOperator.IOperator<OperationTypes> GetMathOperator(string command, OperationTypes operationType)
+        public static mathOperator.IOperator<OperationTypes> CreateMathOperator(string command, OperationTypes operationType)
         {
             /* At this point we know there is 3 commands stored in 'm_command'
              * Where first & last are the values to use. And second idicates which math-operator to use
