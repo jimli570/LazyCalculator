@@ -1,18 +1,28 @@
-﻿namespace Calculator.command
+﻿using Calculator.command.identifier;
+using System.Collections.Generic;
+
+namespace Calculator.command
 {
     public class PrintCommand : ICommand<CommandTypes>
     {
         public string Command { get; private set; }
+        public string RegisterName { get; private set; }
+        public string Value { get; private set; }
+
         public CommandTypes CommandType { get; private set; }
-        
-        public string Term { get; private set; }
 
         public PrintCommand(string command)
         {
             Command = command;
-            CommandType = CommandTypes.PRINT;
+            RegisterName = Command.Split(" ")[1];
+            Value = "";
 
-            Term = command.Split(" ")[1];
+            CommandType = CommandTypes.PRINT;
+        }
+
+        public Dictionary<string, int> Execute(Dictionary<string, int> register)
+        {
+            return register;
         }
     }
 }

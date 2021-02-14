@@ -21,7 +21,6 @@ namespace Calculator
                 foreach (string commandline in lines) {
                     calculator.Command( commandline );
                 }
-
                 Console.ReadLine();
             }
             catch (IOException ex) {
@@ -46,7 +45,7 @@ namespace Calculator
             if (args.Length == 1)  {
                 filepath = args[0];
             } else {
-                filepath = "math_data_1.txt"; // Default filePath, if none provided
+                filepath = "math_data_3.txt"; // Default filePath, if none provided
             }
 
             return filepath;

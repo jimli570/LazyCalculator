@@ -1,10 +1,13 @@
-﻿namespace Calculator.command
+﻿using System.Collections.Generic;
+
+namespace Calculator.command
 {
     public enum CommandTypes
     {
         UNKNOWN,
-        MATH,
-        MATH_LAZY,
+        MATH_ADD,
+        MATH_SUB,
+        MATH_MULT,
         PRINT
     }
 
@@ -12,6 +15,10 @@
         where T : System.Enum
     {
         string Command { get; }
+        string RegisterName { get; }
+        string Value { get; }
         T CommandType { get; }
+
+        Dictionary<string, int> Execute(Dictionary<string, int> register);
     }
 }

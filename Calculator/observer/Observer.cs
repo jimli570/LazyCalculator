@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Test.command
+namespace Calculator.observer
 {
-    class UnknownCommandTest
+    class Observer
     {
     }
 }

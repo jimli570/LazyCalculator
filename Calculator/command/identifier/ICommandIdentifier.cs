@@ -2,8 +2,9 @@
 
 namespace Calculator.command.identifier
 {
-    public interface ICommandIdentifier
+    public interface ICommandIdentifier<T>
+        where T : System.Enum
     {
-        ICommand<CommandTypes> Identify(string commandline, List<string> lazyRegister);
+        T Identify(string commandline);
     }
 }
