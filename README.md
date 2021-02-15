@@ -22,13 +22,13 @@ Note:
 
 value can be a registernname, if they can be evaluated at print.
 
-## Other
+### Other
 
-print **registername**
+- _print_ **registername**
 
 Note:
 
-_registername_ has to either have a value in the register, or possible to evaluate the value.
+_registername_ has to either have a value in the register, or the possibility to be evaluated.
 
 ## Requirements
 
