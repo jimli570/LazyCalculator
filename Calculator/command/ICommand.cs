@@ -4,11 +4,7 @@ namespace Calculator.command
 {
     public enum CommandTypes
     {
-        UNKNOWN,
-        MATH_ADD,
-        MATH_SUB,
-        MATH_MULT,
-        PRINT
+        UNKNOWN, MATH_ADD, MATH_SUB, MATH_MULT, PRINT
     }
 
     public interface ICommand<T>

@@ -1,5 +1,4 @@
-﻿using Calculator.command.identifier;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Calculator.command
 {
@@ -17,6 +16,7 @@ namespace Calculator.command
             CommandType = CommandTypes.UNKNOWN;
         }
 
+        // Just to comply with interface
         public Dictionary<string, int> Execute(System.Collections.Generic.Dictionary<string, int> register)
         {
             return register;

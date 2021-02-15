@@ -21,8 +21,7 @@ namespace Calculator.fileReader
             List<string> commands = new List<string>();
 
             string line;
-            while ( (line = fileReader.ReadLine()) != null )
-            {
+            while ( (line = fileReader.ReadLine()) != null ) {
                 commands.Add( line );
             }
 

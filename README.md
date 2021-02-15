@@ -1,12 +1,31 @@
 # Lazy Calculator
 
-Written in C# 7.9 .NET Core 2.1
 The application reads UTF-8 encoded textfiles containing commands for the calculator.
-Filepath can be specified through command line input, if no path is specified 'math_data_1.txt' will be defaulted.
+Filepath can be specified through command line input, if no path is specified 'math_data_3.txt' will be defaulted.
 
 Operations the calculator can not determine directly, will by evaluated at print. Therefore the name 'Lazy Calculator'.
 
 Examples of accepted input can be found in 'math_data_1.txt', 'math_data_2.txt' & 'math_data_3.txt'. 
+
+Written in C# 7.9, .NET Core 2.1.
+
+## Valid commands
+
+List of valid commands.
+
+### Mathematical
+
+<registername> add		 <value>
+<registername> substract <value> 
+<registername> multiply  <value> 
+
+Note: <value> can be a registernname, if they can be evaluated at print.
+
+## Other
+
+print <registername>
+
+Note: <registername> has to either have a value in the register, or possible to evaluate the value.
 
 ## Requirements
 

@@ -21,7 +21,7 @@ namespace Calculator
                 foreach (string commandline in lines) {
                     calculator.Command( commandline );
                 }
-                Console.ReadLine();
+                // Console.ReadLine();
             }
             catch (IOException ex) {
                 Console.WriteLine(ex.ToString());

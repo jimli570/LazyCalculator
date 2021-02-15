@@ -12,7 +12,7 @@ namespace Calculator.command.identifier
             { CommandTypes.MATH_ADD,    "add" },
             { CommandTypes.MATH_SUB,    "substract" },
             { CommandTypes.MATH_MULT,   "multiply" },
-            { CommandTypes.PRINT,       "print"}
+            { CommandTypes.PRINT,       "print" }
         };
 
         public readonly static Dictionary<string, CommandTypes> COMMAND_TYPE = new Dictionary<string, CommandTypes> {
@@ -29,9 +29,12 @@ namespace Calculator.command.identifier
             { TYPE_COMMAND[CommandTypes.PRINT],     0 },
         };
 
-        public readonly static Dictionary<int, List<string>> COMMAND_LEN_NEW = new Dictionary<int, List<string>> {
-            { 2, new List<string> { "print" } },
-            { 3, new List<string> { "add", "substract", "multiply"} }
+        public readonly static Dictionary<int, List<string>> COMMAND_LEN = new Dictionary<int, List<string>> {
+            { 2, new List<string> { TYPE_COMMAND[CommandTypes.PRINT] } },
+            { 3, new List<string> {
+                TYPE_COMMAND[CommandTypes.MATH_ADD],
+                TYPE_COMMAND[CommandTypes.MATH_SUB],
+                TYPE_COMMAND[CommandTypes.MATH_MULT] } }
         };
 
         public CommandTypes Identify(string commandline)
@@ -39,15 +42,14 @@ namespace Calculator.command.identifier
             string[] commandlineArr = commandline.Split(" ");
 
             int commandLen = commandlineArr.Length;
-            bool validLength = COMMAND_LEN_NEW.ContainsKey(commandLen);
+            bool validLength = COMMAND_LEN.ContainsKey(commandLen);
             bool isAlphaNumerical = Regex.IsMatch(commandline.Replace(" ", ""), "^[a-zA-Z0-9]*$");
 
             bool commandFound = false;
             string foundCommand = "";
 
-            if (validLength && isAlphaNumerical)
-            {
-                List<string> potentiallyValidCommands = COMMAND_LEN_NEW[commandLen];
+            if (validLength && isAlphaNumerical) {
+                List<string> potentiallyValidCommands = COMMAND_LEN[commandLen];
 
                 foreach (string potentialCommand in potentiallyValidCommands) {
                     commandFound = CheckPotentialCommand(potentialCommand, commandlineArr);

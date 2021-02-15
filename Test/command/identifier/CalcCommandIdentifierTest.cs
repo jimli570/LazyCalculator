@@ -22,6 +22,7 @@ namespace CalcCommandIdentifierTest
         [TestCase("b print",        CommandTypes.UNKNOWN)]
         [TestCase("multiply",       CommandTypes.UNKNOWN)]
         [TestCase("add saf asf",    CommandTypes.UNKNOWN)]
+        [TestCase("b£ add 10",      CommandTypes.UNKNOWN)]
         public void IdentifyMathAddTest(string commandline, CommandTypes expected)
         {
             CommandTypes commandType = m_commandIdentifier.Identify(commandline);

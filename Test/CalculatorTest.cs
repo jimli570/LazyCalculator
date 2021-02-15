@@ -27,7 +27,7 @@ namespace CalculatorTest
                 calculator.Command(commandline);
             }
 
-            Assert.That(calculator.PrintLog, Is.EqualTo(expectedPrintLog));
+            Assert.That(calculator.PrintLogList, Is.EqualTo(expectedPrintLog));
         }
     }
 }

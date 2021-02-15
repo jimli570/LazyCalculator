@@ -13,7 +13,7 @@ namespace Calculator
         private List<string> m_lazyRegisters; // Registers to be evaluated at print
         private List<ICommand<CommandTypes>> m_lazyCommands; // Commands to be evaluated at print
 
-        public List<string> PrintLog { get; private set; } // Output from print
+        public List<string> PrintLogList { get; private set; } // Output from print
 
         public Calculator()
         {
@@ -23,7 +23,7 @@ namespace Calculator
 
             m_lazyCommands = new List<ICommand<CommandTypes>>(); // Commands to be evaluated at prints
 
-            PrintLog = new List<string>();
+            PrintLogList = new List<string>();
         }
 
         public void Command(string commandline)
@@ -34,6 +34,14 @@ namespace Calculator
 
             DoAction(command, commandType);
         }
+
+        //public void Clear()
+        //{
+        //    m_register.Clear();
+        //    m_lazyRegisters.Clear();
+        //    m_lazyCommands.Clear();
+        //    PrintLogList.Clear();
+        //}
 
         private void DoAction(command.ICommand<CommandTypes> command, CommandTypes commandType)
         {
@@ -63,56 +71,17 @@ namespace Calculator
 
         private void MathAddAction(MathAddCommand command)
         {
-            bool isEvaluated = m_register.ContainsKey(command.RegisterName);
-            bool needLazyEval = CommandHelper.NeedsLazyEval(command.Value, m_lazyRegisters, m_register);
-
-            if (needLazyEval && !isEvaluated) {
-                m_lazyCommands.Add(command);
-
-                if (!m_lazyRegisters.Contains(command.RegisterName)) {
-                    m_lazyRegisters.Add(command.RegisterName);
-                }
-            }
-            else {
-                // Update register with result
-                m_register = command.Execute(m_register);
-            }
+            MathAction(command);
         }
 
         private void MathMultAction(MathMultCommand command)
         {
-            bool isEvaluated = m_register.ContainsKey(command.RegisterName);
-            bool needLazyEval = CommandHelper.NeedsLazyEval(command.Value, m_lazyRegisters, m_register);
-
-            if (needLazyEval && !isEvaluated) {
-                m_lazyCommands.Add(command);
-
-                if (!m_lazyRegisters.Contains(command.RegisterName)) {
-                    m_lazyRegisters.Add(command.RegisterName);
-                }
-            }
-            else {
-                // Update register with result
-                m_register = command.Execute(m_register);
-            }
+            MathAction(command);
         }
 
         private void MathSubAction(MathSubCommand command)
         {
-            bool isEvaluated = m_register.ContainsKey(command.RegisterName);
-            bool needLazyEval = CommandHelper.NeedsLazyEval(command.Value, m_lazyRegisters, m_register);
-
-            if (needLazyEval && !isEvaluated) {
-                m_lazyCommands.Add(command);
-
-                if (!m_lazyRegisters.Contains(command.RegisterName)) {
-                    m_lazyRegisters.Add(command.RegisterName);
-                }
-            }
-            else {
-                // Update register with result
-                m_register = command.Execute(m_register);
-            }
+            MathAction(command);
         }
 
         private void PrintAction(PrintCommand command)
@@ -126,19 +95,22 @@ namespace Calculator
                 m_register[command.RegisterName].ToString() :
                 ("Failed to evaluate: " + command.RegisterName);
 
-            Console.WriteLine(printValue);
-            PrintLog.Add(printValue);
+            PrintLog(printValue);
         }
 
         private void UnknownAction(UnknownCommand command)
         {
-            Console.WriteLine("Unknown action: " + command.Command);
+            string printValue = "Unknown action: " + command.Command;
+            PrintLog(printValue);
         }
 
         private bool EvaluteTerm(string term, int depth)
         {
             const int maxDepth = 50;
             if (depth > maxDepth) {
+                string printValue = "Failed to evaluate term " + term + " (depth > " + maxDepth + ")";
+                PrintLog(printValue);
+
                 return false;
             }
 
@@ -185,6 +157,41 @@ namespace Calculator
             commandline = Regex.Replace(commandline, @"\s+", " "); // Remove pontential extra spaces in between words/commands/values
 
             return commandline;
+        }
+
+        private void MathAction(ICommand<CommandTypes> command)
+        {
+            bool isEvaluated = m_register.ContainsKey(command.RegisterName);
+            bool needLazyEval = NeedsLazyEval(command);
+
+            if (needLazyEval && !isEvaluated) {
+                m_lazyCommands.Add(command);
+
+                if (!m_lazyRegisters.Contains(command.RegisterName)) {
+                    m_lazyRegisters.Add(command.RegisterName);
+                }
+            }
+            else {
+                // Update register with result
+                m_register = command.Execute(m_register);
+            }
+        }
+
+        private void PrintLog(string printValue)
+        {
+            Console.WriteLine(printValue);
+            PrintLogList.Add(printValue);
+        }
+
+        private bool IsNumber(string potentialNumber)
+        {
+            return int.TryParse(potentialNumber, out int n);
+        }
+
+        private bool NeedsLazyEval(ICommand<CommandTypes> command)
+        {
+            return ((!m_lazyRegisters.Contains(command.Value) && !IsNumber(command.Value)) ||
+                    !m_register.ContainsKey(command.Value));
         }
     }
 }
