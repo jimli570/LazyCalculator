@@ -89,11 +89,17 @@ namespace Calculator
             bool needToEval = !m_register.ContainsKey(command.RegisterName);
 
             // Evaluate if needed
-            bool readyToPrint = needToEval ? EvaluteTerm(command.RegisterName, 0) : true;
+            bool readyToPrint = needToEval ? 
+                EvaluteTerm(command.RegisterName, 0) : true;
 
-            string printValue = readyToPrint ?
+            bool keyInRegister = m_register.ContainsKey(command.RegisterName);
+            string registerName = keyInRegister ?
                 m_register[command.RegisterName].ToString() :
-                ("Failed to evaluate: " + command.RegisterName);
+                command.RegisterName;
+
+            string printValue = (readyToPrint && keyInRegister) ?
+                registerName :
+                ("Failed to evaluate: " + registerName);
 
             PrintLog(printValue);
         }

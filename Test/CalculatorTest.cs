@@ -12,9 +12,10 @@ namespace CalculatorTest
             "costs add salaries", "salaries add 20", "salaries multiply 5", "costs add 10", "print result" }, new[] { "90" } )]
         [TestCase( new[] { "a      add    20", "print a" },  new[] { "20" } )]
         [TestCase( new[] { "    a add 20", "print a" },      new[] { "20" } )]
-        [TestCase( new[] { "a add 20    ", "print a" },      new[] { "20" } )]
-        [TestCase( new[] { "a     add 20", "print a" },      new[] { "20" } )]
-        [TestCase( new[] { "a add     20", "print a" },      new[] { "20" } )]
+        [TestCase( new[] { "a add 40    ", "print a     " }, new[] { "40" } )]
+        [TestCase( new[] { "a     add 20", "print   a" },    new[] { "20" } )]
+        [TestCase( new[] { "a add     20", "print a" },      new[] { "20" })]
+        [TestCase( new[] { "print a" },                      new[] { "Failed to evaluate: a" })]
         public void CalculatorOutputTest(string[] input, string[] expected)
         {
             Calculator.Calculator calculator = new Calculator.Calculator();
